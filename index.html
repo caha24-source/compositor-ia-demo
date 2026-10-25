@@ -1,4 +1,4 @@
-<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Compositor IA Studio · Voice to Instrument</title><style>:root{font-family:system-ui;background:#101522;color:#edf2ff}body{margin:0}main{max-width:1050px;margin:auto;padding:24px}h1{margin-bottom:3px}p,small{color:#aebbd2}.panel{background:#1c2535;border:1px solid #344158;border-radius:16px;padding:18px;margin:16px 0}button,select,input{font:inherit}button{background:#6756ef;color:white;border:0;border-radius:9px;padding:12px 16px;cursor:pointer;margin:4px}button:disabled{opacity:.45;cursor:not-allowed}select,input{background:#111827;color:white;border:1px solid #475569;border-radius:8px;padding:9px}label{display:inline-block;margin:8px 12px 8px 0}canvas{width:100%;height:210px;background:#0c1320;border-radius:9px}#status{color:#91e0c2}a{color:#b6b0ff}.note{font-size:13px}header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}</style></head><body><main><header><div><h1>🎹 Compositor IA Studio</h1><p>Voice to Instrument · Prototipo 2.4 · Afinación y separación de notas</p></div><span>🎙️ → 🎼 → 🎹</span></header><section class="panel"><h2>1. Graba tu melodía</h2><p>Tararea una sola nota a la vez, sin acompañamiento. Utiliza audífonos para evitar que el sonido del piano entre en el micrófono.</p><label>Entrada <select id="device"><option value="">Micrófono predeterminado</option></select></label><button id="refresh">Detectar entradas</button><div><button id="record">● Grabar</button><button id="stop" disabled>■ Detener</button><button id="analyze" disabled>✨ Convertir a notas</button></div><p id="status">Listo. Para grabar, abre la app desde localhost o HTTPS y concede permiso al micrófono.</p><audio id="playback" controls style="width:100%;margin-top:8px"></audio><div><button id="original" disabled>⬇ Descargar grabación original</button></div></section><section class="panel"><h2>🎼 Afinador cromático en vivo</h2><p>Probá una nota por vez, con tu voz o un teclado. Afinación de referencia: La4 = 440 Hz.</p><button id="tunerStart">🎤 Activar afinador</button><button id="tunerStop" disabled>■ Detener afinador</button><p id="tunerReadout" aria-live="polite" style="font-size:25px;color:#91e0c2">Esperando sonido…</p><p id="tunerCents">Frecuencia y desviación aparecerán aquí.</p><p id="tunerLevel">Nivel de entrada: —</p></section><section class="panel"><h2>2. Melodía detectada</h2><label>Tempo (BPM) <input id="bpm" type="number" value="110" min="40" max="240"></label><label>Instrumento <select id="instrument"><option value="piano">Piano</option><option value="bass">Bajo sintético</option><option value="marimba">Marimba sintética</option></select></label><canvas id="roll" width="1000" height="210"></canvas><p id="summary">Todavía no hay notas. El detector es monofónico y experimental.</p><p id="noteNames" class="note" aria-live="polite"></p><button id="listen" disabled>▶ Escuchar instrumento</button><button id="midi" disabled>⬇ Exportar MIDI</button><button id="wav" disabled>⬇ Exportar audio WAV</button></section><section class="panel"><h2>Qué estamos probando</h2><p>Esta versión experimental convierte tarareos monofónicos en notas mediante el algoritmo YIN y filtrado temporal, dibuja un piano roll y permite exportar MIDI y audio sintetizado. No es todavía un modelo de IA ni una DAW multipista; la detección puede fallar con ruido, vibrato o voces graves.</p><p class="note">El audio permanece en tu navegador. No se envía a ningún servidor. Requiere Chrome o Edge reciente, permiso de micrófono y ejecución en localhost/HTTPS.</p></section></main><script>
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Compositor IA Studio · Voice to Instrument</title><style>:root{font-family:system-ui;background:#101522;color:#edf2ff}body{margin:0}main{max-width:1050px;margin:auto;padding:24px}h1{margin-bottom:3px}p,small{color:#aebbd2}.panel{background:#1c2535;border:1px solid #344158;border-radius:16px;padding:18px;margin:16px 0}button,select,input{font:inherit}button{background:#6756ef;color:white;border:0;border-radius:9px;padding:12px 16px;cursor:pointer;margin:4px}button:disabled{opacity:.45;cursor:not-allowed}select,input{background:#111827;color:white;border:1px solid #475569;border-radius:8px;padding:9px}label{display:inline-block;margin:8px 12px 8px 0}canvas{width:100%;height:210px;background:#0c1320;border-radius:9px}#status{color:#91e0c2}a{color:#b6b0ff}.note{font-size:13px}header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}</style></head><body><main><header><div><h1>🎹 Compositor IA Studio</h1><p>Voice to Instrument · Prototipo 2.5 · Separación por altura</p></div><span>🎙️ → 🎼 → 🎹</span></header><section class="panel"><h2>1. Graba tu melodía</h2><p>Tararea una sola nota a la vez, sin acompañamiento. Utiliza audífonos para evitar que el sonido del piano entre en el micrófono.</p><label>Entrada <select id="device"><option value="">Micrófono predeterminado</option></select></label><button id="refresh">Detectar entradas</button><div><button id="record">● Grabar</button><button id="stop" disabled>■ Detener</button><button id="analyze" disabled>✨ Convertir a notas</button></div><p id="status">Listo. Para grabar, abre la app desde localhost o HTTPS y concede permiso al micrófono.</p><audio id="playback" controls style="width:100%;margin-top:8px"></audio><div><button id="original" disabled>⬇ Descargar grabación original</button></div></section><section class="panel"><h2>🎼 Afinador cromático en vivo</h2><p>Probá una nota por vez, con tu voz o un teclado. Afinación de referencia: La4 = 440 Hz.</p><button id="tunerStart">🎤 Activar afinador</button><button id="tunerStop" disabled>■ Detener afinador</button><p id="tunerReadout" aria-live="polite" style="font-size:25px;color:#91e0c2">Esperando sonido…</p><p id="tunerCents">Frecuencia y desviación aparecerán aquí.</p><p id="tunerLevel">Nivel de entrada: —</p></section><section class="panel"><h2>2. Melodía detectada</h2><label>Tempo (BPM) <input id="bpm" type="number" value="110" min="40" max="240"></label><label>Instrumento <select id="instrument"><option value="piano">Piano</option><option value="bass">Bajo sintético</option><option value="marimba">Marimba sintética</option></select></label><canvas id="roll" width="1000" height="210"></canvas><p id="summary">Todavía no hay notas. El detector es monofónico y experimental.</p><p id="noteNames" class="note" aria-live="polite"></p><button id="listen" disabled>▶ Escuchar instrumento</button><button id="midi" disabled>⬇ Exportar MIDI</button><button id="wav" disabled>⬇ Exportar audio WAV</button></section><section class="panel"><h2>Qué estamos probando</h2><p>Esta versión experimental convierte tarareos monofónicos en notas mediante el algoritmo YIN y filtrado temporal, dibuja un piano roll y permite exportar MIDI y audio sintetizado. No es todavía un modelo de IA ni una DAW multipista; la detección puede fallar con ruido, vibrato o voces graves.</p><p class="note">El audio permanece en tu navegador. No se envía a ningún servidor. Requiere Chrome o Edge reciente, permiso de micrófono y ejecución en localhost/HTTPS.</p></section></main><script>
 const $=id=>document.getElementById(id);let stream,rec,chunks=[],blob,notes=[],ctx,playCtx,recordedUrl;const sampleRate=22050;let rawBuffer;
 function status(t){$('status').textContent=t}function download(data,name,type){let url=URL.createObjectURL(new Blob([data],{type}));let a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),5000)}
 async function devices(){try{let s=await navigator.mediaDevices.getUserMedia({audio:true});let ds=await navigator.mediaDevices.enumerateDevices();$('device').innerHTML='<option value="">Micrófono predeterminado</option>';ds.filter(x=>x.kind==='audioinput').forEach(x=>{let o=document.createElement('option');o.value=x.deviceId;o.textContent=x.label||'Entrada USB';$('device').append(o)});s.getTracks().forEach(t=>t.stop());status('Entradas detectadas. Selecciona la interfaz USB si aparece.')}catch(e){status('No se pudo acceder al micrófono: '+e.message)}}$('refresh').onclick=devices;$('original').onclick=()=>{if(blob)download(blob,'tarareo-original.'+(blob.type.includes('mp4')?'m4a':'webm'),blob.type||'audio/webm')};
@@ -109,97 +109,51 @@ $('analyze').onclick=async()=>{try{status('Analizando melodía...');let array=aw
    observations.push(pitch(frame,sampleRate));
  }
 
- // Versión 2.0: segmentación por articulaciones vocales, no por cada cambio de pitch.
- const detected=observations.filter(Number.isFinite).length;
- const smoothed=smoothPitches(observations);
- const activeLevels=levels.filter(v=>v>.003).sort((x,y)=>x-y);
- const typical=activeLevels.length?activeLevels[Math.floor(activeLevels.length*.65)]:.01;
- const gateOn=Math.max(.0025,Math.min(.014,typical*.16));
- const gateOff=gateOn*.55;
+
+ // v2.5: transcripción basada en la altura, no en silencios obligatorios.
+ // El afinador y el conversor comparten la misma función pitch().
  const step=hop/sampleRate;
- // Detectar pausas reales con histéresis; evitar cortar una nota por un frame débil.
- let segments=[],on=false,begin=0,below=0,above=0;
- for(let i=0;i<levels.length;i++){
-   if(!on){
-     above=levels[i]>=gateOn?above+1:0;
-     if(above>=2){begin=Math.max(0,i-above+1);on=true;below=0;}
-   }else{
-     below=levels[i]<gateOff?below+1:0;
-     if(below>=4){
-       const end=i-below+1;
-       if((end-begin)*step>=.09)segments.push({from:begin,to:end});
-       on=false;above=0;below=0;
-     }
+ const validLevels=levels.filter(x=>x>.002).sort((x,y)=>x-y);
+ const reference=validLevels.length?validLevels[Math.floor(validLevels.length*.55)]:.005;
+ const gate=Math.max(.0018,Math.min(.009,reference*.13));
+ const midiFrames=observations.map((v,i)=>levels[i]>=gate&&Number.isFinite(v)?Math.round(v):null);
+ // Mediana de 5 cuadros para suprimir saltos aislados de frecuencia.
+ const stable=midiFrames.map((v,i)=>{
+   const around=midiFrames.slice(Math.max(0,i-2),Math.min(midiFrames.length,i+3)).filter(Number.isFinite).sort((x,y)=>x-y);
+   return around.length>=3?around[Math.floor(around.length/2)]:null;
+ });
+ // Rellenar pérdidas breves de la misma nota, sin atravesar cambios de altura.
+ for(let i=1;i<stable.length-1;i++){
+   if(stable[i]!==null)continue;
+   let l=i-1,r=i+1;
+   while(l>=0&&stable[l]===null&&i-l<=4)l--;
+   while(r<stable.length&&stable[r]===null&&r-i<=4)r++;
+   if(l>=0&&r<stable.length&&stable[l]!==null&&stable[l]===stable[r]&&r-l<=7){
+     for(let k=l+1;k<r;k++)stable[k]=stable[l];
    }
  }
- if(on&&((levels.length-begin)*step>=.09))segments.push({from:begin,to:levels.length});
- // Separar emisiones con caída marcada de energía, incluso cuando el silencio
- // entre notas es demasiado corto para que el detector de pitch devuelva null.
- const split=[];
- for(const seg of segments){
-   let start=seg.from;
-   for(let i=seg.from+3;i<seg.to-3;i++){
-     const left=Math.max(...levels.slice(Math.max(start,i-7),i));
-     const right=Math.max(...levels.slice(i+1,Math.min(seg.to,i+8)));
-     const valley=levels[i];
-     if(left>gateOn*1.5&&right>gateOn*1.5&&valley<Math.min(left,right)*.38
-        &&(i-start)*step>=.09){
-       split.push({from:start,to:i});start=i+1;i+=4;
-     }
-   }
-   split.push({from:start,to:seg.to});
- }
- // Recuperar cambios claros de altura dentro de una emisión continua.
- // Exigir estabilidad para evitar confundir vibrato con notas nuevas.
- const refined=[];
- for(const seg of split){
-   let start=seg.from, lastSplit=seg.from;
-   for(let i=seg.from+8;i<seg.to-7;i++){
-     const left=smoothed.slice(i-7,i-2).filter(Number.isFinite);
-     const right=smoothed.slice(i+2,i+7).filter(Number.isFinite);
-     if(left.length<4||right.length<4)continue;
-     const a=left.slice().sort((x,y)=>x-y)[Math.floor(left.length/2)];
-     const b=right.slice().sort((x,y)=>x-y)[Math.floor(right.length/2)];
-     if(Math.abs(a-b)>=.85 && (i-lastSplit)*step>=.13 && (seg.to-i)*step>=.13
-        && left.filter(x=>Math.abs(x-a)<=1).length>=4
-        && right.filter(x=>Math.abs(x-b)<=1).length>=4){
-       refined.push({from:start,to:i});start=i;lastSplit=i;i+=8;
-     }
-   }
-   refined.push({from:start,to:seg.to});
- }
- // Cada emisión vocal produce una sola nota. La mediana y el voto mayoritario
- // descartan ataques, finales, vibrato y errores de octava de YIN.
  notes=[];
- for(const seg of refined){
-   if((seg.to-seg.from)*step<.085)continue;
-   const margin=Math.min(7,Math.floor((seg.to-seg.from)*.18));
-   const valid=[];
-   // Reanalizar el interior de cada nota con ventanas más cortas:
-   // evita que una ventana centrada en la transición mezcle dos alturas.
-   const fineWin=4096;
-   for(let i=seg.from+margin;i<seg.to-margin;i++){
-     if(levels[i]<gateOff)continue;
-     const center=i*hop, frame=new Float32Array(fineWin);
-     const from=center-(fineWin>>1);
-     for(let j=0;j<fineWin;j++){
-       const k=from+j;
-       frame[j]=k>=0&&k<pcm.length?pcm[k]:0;
-     }
-     const estimate=pitch(frame,sampleRate);
-     if(Number.isFinite(estimate))valid.push(estimate);
-   }
-   if(valid.length<Math.max(3,Math.floor((seg.to-seg.from)*.16)))continue;
-   valid.sort((x,y)=>x-y);
-   const center=valid[Math.floor(valid.length/2)];
-   const inliers=valid.filter(v=>Math.abs(v-center)<.85);
-   if(inliers.length<Math.max(3,valid.length*.40))continue;
-   inliers.sort((x,y)=>x-y);
-   const midi=Math.round(inliers[Math.floor(inliers.length/2)]);
-   const start=Math.max(0,seg.from*step);
-   const end=Math.min(realDuration,seg.to*step);
-   if(end-start>=.085)notes.push({midi,start,duration:end-start});
+ let start=-1,current=null;
+ function emit(end){
+   if(start<0||current===null)return;
+   const from=Math.max(0,start*step),to=Math.min(realDuration,end*step);
+   if(to-from>=.10)notes.push({midi:current,start:from,duration:to-from});
  }
+ for(let i=0;i<=stable.length;i++){
+   const next=i<stable.length?stable[i]:null;
+   if(next===current)continue;
+   if(current!==null)emit(i);
+   current=next;start=next===null?-1:i;
+ }
+ // Unir fragmentos vecinos de la misma altura separados por huecos muy cortos.
+ const merged=[];
+ for(const n of notes){
+   const prev=merged[merged.length-1];
+   if(prev&&prev.midi===n.midi&&n.start-(prev.start+prev.duration)<.065){
+     prev.duration=n.start+n.duration-prev.start;
+   }else merged.push(n);
+ }
+ notes=merged;
  const confidence=observations.length?Math.round(detected/observations.length*100):0;
  $('noteNames').textContent=notes.length?'Notas: '+notes.slice(0,48).map(n=>noteLabel(n.midi)+' ('+n.duration.toFixed(2)+' s)').join(' · ')+(notes.length>48?' …':''):'';draw();$('listen').disabled=$('midi').disabled=$('wav').disabled=!notes.length;$('summary').textContent=notes.length+' notas detectadas · '+decoded.duration.toFixed(1)+' segundos · voz reconocida en '+confidence+'% de las ventanas';status(notes.length?'Conversión terminada. Escucha y exporta tu melodía.':'No se detectaron notas. Escucha la grabación, intenta cantar una vocal sostenida (mmm o aaa) y descarga el original si quieres compartirlo para diagnóstico.')}catch(e){status('No se pudo analizar: '+e.message)}};
 function draw(){let c=$('roll'),g=c.getContext('2d');g.clearRect(0,0,c.width,c.height);g.fillStyle='#101827';g.fillRect(0,0,c.width,c.height);for(let i=0;i<12;i++){g.strokeStyle='#26364b';g.beginPath();g.moveTo(0,i*c.height/12);g.lineTo(c.width,i*c.height/12);g.stroke()}if(!notes.length)return;let low=Math.min(...notes.map(n=>n.midi))-2,high=Math.max(...notes.map(n=>n.midi))+2,span=Math.max(12,high-low+1),end=Math.max(...notes.map(n=>n.start+n.duration));notes.forEach(n=>{g.fillStyle='#a88bff';g.fillRect(n.start/end*c.width,((high-n.midi)/span)*c.height,Math.max(3,n.duration/end*c.width),Math.max(5,c.height/span-2))})}
